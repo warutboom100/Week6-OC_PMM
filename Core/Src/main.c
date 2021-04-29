@@ -471,13 +471,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		_micro += 65535;
 	}
 }
-
+//ADCFeedback Target or 1V = (1v*4096.0)/3.3v;
 void control_volt(){
-	 float Position_KP=20,Position_KI=0.1,Position_KD=1;
-		 static float ErrorValue,Integral_ErrorValue,Last_ErrorValue;
-		 ErrorValue = 1241-ADCFeedBack;                                  //Calculate the deviation
-		 Integral_ErrorValue += ErrorValue;	                                 //Find the integral of the deviation
-		 PWMOut = Position_KP*ErrorValue + Position_KI*Integral_ErrorValue + Position_KD*(ErrorValue-Last_ErrorValue);       //Position PID controller
+	 float KP=10,KI=0.2,KD=2;
+		 static float ErrorValue,Summary_ErrorValue,Last_ErrorValue;
+		 ErrorValue = 1241.2 - ADCFeedBack;
+		 Summary_ErrorValue += ErrorValue;
+		 PWMOut = KP*ErrorValue + KI*Summary_ErrorValue + KD*(ErrorValue-Last_ErrorValue);
 		 Last_ErrorValue=ErrorValue;
 
 
